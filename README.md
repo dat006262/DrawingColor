@@ -1,2 +1,2 @@
-# DrawingColor
-ProxProject
+# basicUIProject
+chứa UI cho cơ bản cho mọi game Mobile
