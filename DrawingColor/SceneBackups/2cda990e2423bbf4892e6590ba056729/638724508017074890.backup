@@ -296,7 +296,6 @@ GameObject:
   - component: {fileID: 339888176}
   - component: {fileID: 339888179}
   - component: {fileID: 339888180}
-  - component: {fileID: 339888181}
   m_Layer: 0
   m_Name: MiddleCamera
   m_TagString: MainCamera
@@ -417,27 +416,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 339888176}
+  ceterGame: {x: 0, y: 0, z: 0}
+  camlookat: {fileID: 707207175}
   virturalcam: {fileID: 570167748}
   slider: {fileID: 187093082}
   othorgographicSizeNormal: 125
-  othorgographicSizeZoomMin: 40
-  othorgographicSizeZoomMax: 150
+  othorgographicSizeZoomMin: 10
+  othorgographicSizeZoomMax: 0
   canMoveCam: 1
---- !u!114 &339888181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 339888173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ff8098828303e6c4da9a40096a0c4504, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  CameraFollow: {fileID: 707207175}
-  targetCamera: {fileID: 339888176}
-  speed: 30
 --- !u!1 &373791101
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,9 +759,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BindingMode: 1
   m_FollowOffset: {x: 0, y: 0, z: -10}
-  m_XDamping: 0.25
-  m_YDamping: 0.25
-  m_ZDamping: 0.25
+  m_XDamping: 1
+  m_YDamping: 1
+  m_ZDamping: 1
   m_AngularDampingMode: 0
   m_PitchDamping: 0
   m_YawDamping: 0
@@ -803,8 +789,8 @@ MonoBehaviour:
   m_ScreenY: 0.5
   m_DeadZoneWidth: 0
   m_DeadZoneHeight: 0
-  m_SoftZoneWidth: 0
-  m_SoftZoneHeight: 0
+  m_SoftZoneWidth: 0.8
+  m_SoftZoneHeight: 0.8
   m_BiasX: 0
   m_BiasY: 0
   m_CenterOnActivate: 1

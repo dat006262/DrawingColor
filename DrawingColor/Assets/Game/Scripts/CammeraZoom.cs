@@ -3,12 +3,10 @@ using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CammeraMove : MMSingleton<CammeraMove>
+public class CammeraZoom : MMSingleton<CammeraZoom>
 {
     [SerializeField] private Camera cam;
-    [SerializeField] private Vector3 ceterGame;
 
-    [SerializeField] private Transform camlookat;
     [SerializeField] private CinemachineVirtualCamera virturalcam;
     //-----------Zomcam//
     public Slider slider;
@@ -24,12 +22,12 @@ public class CammeraMove : MMSingleton<CammeraMove>
     float scale => (Screen.height / (float)Screen.width) / (float)(1920 / (float)1080);
     private void Start()
     {
-
+        othorgographicSizeZoomMax           = othorgographicSizeNormal * 1.2f;
         virturalcam.m_Lens.OrthographicSize = othorgographicSizeNormal * scale;
 
         slider.onValueChanged.AddListener(OnSliderValueChanged);
-        slider.value = 0;
-        ceterGame = new Vector3(0,0 ,0);//25,25,0
+        float x =  Mathf.Lerp(0f,1f, (othorgographicSizeZoomMax-othorgographicSizeNormal) / (othorgographicSizeZoomMax-othorgographicSizeZoomMin));
+        slider.value = x;
     }
 
     private void Update()
@@ -65,7 +63,7 @@ public class CammeraMove : MMSingleton<CammeraMove>
         {
             Vector3 direction = StartTouch - cam.ScreenToWorldPoint(Input.mousePosition);
             //khi cam move theo thi directon tien toi vector0
-            camlookat.transform.position = ClampCamera(camlookat.transform.position + direction);
+           // camlookat.transform.position = ClampCamera(camlookat.transform.position + direction);
 
         }
         if (Input.GetMouseButtonUp(0))
@@ -76,10 +74,9 @@ public class CammeraMove : MMSingleton<CammeraMove>
     }
     private void OnSliderValueChanged(float value)
     {
-        virturalcam.m_Lens.OrthographicSize = Mathf.Lerp(othorgographicSizeNormal * scale, othorgographicSizeZoomMin, value);
-        camlookat.transform.position = ClampCamera(camlookat.transform.position);
+        virturalcam.m_Lens.OrthographicSize = Mathf.Lerp(othorgographicSizeZoomMax * scale, othorgographicSizeZoomMin*scale, value);
     }
-    private Vector3 ClampCamera(Vector3 targerPosition)//truyen vao 1 vector3 va tra ve 1 vector3 hop ly voi Cammera
+    private Vector3 ClampCamera(Vector3 targerPosition,Vector3 ceterGame)//truyen vao 1 vector3 va tra ve 1 vector3 hop ly voi Cammera
     {
         Vector3 vectorx;
         vectorx = new Vector3(targerPosition.x, targerPosition.y, targerPosition.z);

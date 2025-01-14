@@ -10,15 +10,16 @@ namespace IndieStudio.DrawingAndColoring.Logic
 {
 	public class CameraDrag : MonoBehaviour
 	{
-		public Camera targetCamera;//the target camera
-		private Touch touch;//the sceen touch
-		private Vector3 currentTouchPosition = Vector3.zero;//the current touch position
-		private Vector3 previousTouchPosition;//the previous touch position
-		private Vector3 offset = Vector3.zero;//the offset between the touch and the scene camera
-		private Vector3 firstTouchPosition;// the first touch postion on the screen
-		private Vector3 targetCameraPosition = Vector3.zero;//scene camera position
-		private Vector2 yClamp, xClamp;//use to limit values
-		[Range(0,30)]
+		public  Transform CameraFollow;
+		public  Camera  targetCamera;                        //the target camera
+		private Touch   touch;                               //the sceen touch
+		private Vector2 currentTouchPosition = Vector2.zero; //the current touch position
+		private Vector2 previousTouchPosition;               //the previous touch position
+		private Vector3 offset = Vector3.zero;               //the offset between the touch and the scene camera
+		private Vector3 firstTouchPosition;                  // the first touch postion on the screen
+		private Vector2 targetCameraPosition = Vector2.zero; //scene camera position
+		private Vector2 yClamp, xClamp;                      //use to limit values
+		[Range(0,300)]
 		public float speed = 10f;//lerp speed
 		private float maxSpeed;// max lerp speed
 		private const float releaseFactor = 5;//touch relase factor or multiplier
@@ -30,16 +31,13 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		public static bool isRunning;//whether the script is running or not
 		public static bool isCameraDraging;//whether the camera is draging or not
 		private bool rightClickBegan;//whether the user clicked on the right mouse button or not
-		public GameManager gameManager;//the game manager reference
 
 		// Use this for initialization
 		void Start ()
 		{
 			//Setting up references
 			rightClickBegan = touchBegan = isRunning = false;
-			if (gameManager == null) {
-				gameManager = GameObject.FindObjectOfType<GameManager> ();
-			}
+			
 			maxSpeed = speed;
 			isCameraDraging = false;
 			initialOrthographicSize = targetCamera.orthographicSize;
@@ -48,9 +46,7 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		// Update is called once per frame
 		void Update ()
 		{
-			if (!GameManager.pointerInDrawArea) {
-				return;
-			}
+		
 
 			if (!Application.isMobilePlatform) {
 				if (Input.GetMouseButtonDown (1)) {
@@ -73,9 +69,6 @@ namespace IndieStudio.DrawingAndColoring.Logic
 				} else if (Input.GetMouseButtonUp (0) || Input.GetMouseButtonUp (1)) {
 					if (rightClickBegan) {
 						TouchRelease ();
-						if (gameManager.currentTool.feature != Tool.ToolFeature.Hand) {
-							isRunning = false;
-						}
 					} else if (touchBegan) {
 						TouchRelease ();
 					}
@@ -207,7 +200,7 @@ namespace IndieStudio.DrawingAndColoring.Logic
 				offset.y = currentTouchPosition.y - targetCameraPosition.y;
 			}
 
-			targetCamera.transform.position = targetCameraPosition;
+			CameraFollow.position = targetCameraPosition;
 		}
 
 		public Vector3 GetTargetPosition(){
