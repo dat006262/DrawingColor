@@ -41,6 +41,14 @@ public class PictureCotroller : MonoBehaviour
 
    #endregion
 
+   [Button]
+   public void ResetPicture()
+   {
+      foreach (var part in parts)
+      {
+         part.OnNotColor();
+      }
+   }
 
    [Button]
    public void GetRef()

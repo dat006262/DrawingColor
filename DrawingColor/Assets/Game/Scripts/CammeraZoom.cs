@@ -16,12 +16,18 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
     
     //MoveCam--------------//
     private Vector3 StartTouch;
-    public bool canMoveCam = true;
+    public  bool    canMoveCam = true;
+
+    public        float currentOrthographicSize => virturalcam? virturalcam.m_Lens.OrthographicSize:0;
+    public static bool  zoomStartedBefore;
+    public static bool  isCameraZooming;
     //-----------------
 
     float scale => (Screen.height / (float)Screen.width) / (float)(1920 / (float)1080);
     private void Start()
     {
+        zoomStartedBefore                   = false;
+        isCameraZooming                     = false;
         othorgographicSizeZoomMax           = othorgographicSizeNormal * 1.2f;
         virturalcam.m_Lens.OrthographicSize = othorgographicSizeNormal * scale;
 
@@ -38,21 +44,8 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
             Zoom(Input.GetAxis("Mouse ScrollWheel"));
         }
 
-
-        if (Input.touchCount == 2)
-        {
-            Touch touchZero = Input.GetTouch(0);
-            Touch touchOne = Input.GetTouch(1);
-
-            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
-            Vector2 touchOnePrevPos = touchOne.position - touchOne.deltaPosition;
-
-            float prevMagnitude = (touchZeroPrevPos - touchOnePrevPos).magnitude;
-            float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
-
-            float different = currentMagnitude - prevMagnitude;
-            Zoom(different * 0.0005f);
-        }
+        OnScreenTouches();
+       
 
         if (Input.GetMouseButtonDown(0) && canMoveCam)
         {
@@ -71,6 +64,32 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
             StartTouch = Vector3.zero;
         }
 
+    }
+
+    private void OnScreenTouches()
+    {
+        if (Input.touchCount == 2)
+        {
+        
+            if (!(Input.touchCount > 1)) {
+                isCameraZooming          = false;
+                return;
+            }
+
+            zoomStartedBefore = true;
+            isCameraZooming   = true;
+            Touch touchZero = Input.GetTouch(0);
+            Touch touchOne  = Input.GetTouch(1);
+
+            Vector2 touchZeroPrevPos = touchZero.position - touchZero.deltaPosition;
+            Vector2 touchOnePrevPos  = touchOne.position  - touchOne.deltaPosition;
+
+            float prevMagnitude    = (touchZeroPrevPos   - touchOnePrevPos).magnitude;
+            float currentMagnitude = (touchZero.position - touchOne.position).magnitude;
+
+            float different = currentMagnitude - prevMagnitude;
+            Zoom(different * 0.0005f);
+        }
     }
     private void OnSliderValueChanged(float value)
     {
