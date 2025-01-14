@@ -28,14 +28,12 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		private float initialDistance;//the initial distance between the first touch and the second touch
 		private float offset;//the offset between the current distance and the initial distance
 		private static float factor = 0.01f;//offset multiply factor
-		public GameManager gameManager;//the game manager reference
 
 		// Use this for initialization
 		void Start ()
 		{
 			//Setting up references
 			isRunning = true;
-			gameManager = GameManager.FindObjectOfType<GameManager> ();
 			zoomInPress = zoomOutPress = false;
 			zoomStartedBefore = false;
 			isCameraZooming = false;
@@ -47,7 +45,7 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		// Update is called once per frame
 		void Update ()
 		{
-			if (!isRunning || !GameManager.pointerInDrawArea) {
+			if (!isRunning) {
 				return;
 			}
 
@@ -117,9 +115,8 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		/// </summary>
 		public void OnZoomInPress(){
 			zoomInPress = true;
-			if (gameManager.currentTool.feature == Tool.ToolFeature.Hand) {
+		
 				CameraDrag.isRunning = false;
-			}
 		}
 
 		/// <summary>
@@ -127,9 +124,8 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		/// </summary>
 		public void OnZoomInPressRelease(){
 			zoomInPress = false;
-			if (gameManager.currentTool.feature == Tool.ToolFeature.Hand) {
+			
 				CameraDrag.isRunning = true;
-			}
 		}
 
 		/// <summary>
@@ -145,9 +141,8 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		/// </summary>
 		public void OnZoomOutPressRelease(){
 			zoomOutPress = false;
-			if (gameManager.currentTool.feature == Tool.ToolFeature.Hand) {
+		
 				CameraDrag.isRunning = true;
-			}
 		}
 
 		/// <summary>

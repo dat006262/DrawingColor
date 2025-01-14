@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Sirenix.OdinInspector;
 
 ///Developed by Indie Studio
 ///https://assetstore.unity.com/publishers/9268
@@ -85,6 +86,7 @@ namespace IndieStudio.DrawingAndColoring.Logic
 		/// Set the color of the part.
 		/// </summary>
 		/// <param name="targetColor">Target color.</param>
+		[Button]
 		public void SetColor(Color targetColor){
 			this.targetColor = targetColor;
 		}
