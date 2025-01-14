@@ -1474,7 +1474,7 @@ MonoBehaviour:
   loop: 0
   loopWhileDragging: 1
   maxVelocity: 0
-  scrollbarVisibility: 0
+  scrollbarVisibility: 1
   snapping: 0
   snapVelocityThreshold: 0
   snapWatchOffset: 0

@@ -15,6 +15,7 @@ public struct PictureCotrollerActionEvent
 {
    public PictureControllerAction pictureControllerAction;
 
+
    /// <summary>
    /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
    /// </summary>
@@ -37,7 +38,7 @@ public class PictureCotroller : MonoBehaviour
    #region Public Variables
    public List<PartClick> parts = new List<PartClick>();
    public SpriteMask      spriteMask;
-   
+   public Vector2         size;
 
    #endregion
 
@@ -55,6 +56,7 @@ public class PictureCotroller : MonoBehaviour
    {
       parts      = this.GetComponentsInChildren<PartClick>().ToList();
       spriteMask = this.GetComponentInChildren<SpriteMask>();
+      size       = this.GetComponent<RectTransform>().sizeDelta;
    }
 
    public void SetMaskPos(Vector3 position)

@@ -37,6 +37,7 @@ namespace EnhancedScrollerDemos.RemoteResourcesDemo
                         }
                         else
                         {
+                            Debug.Log("LoadComplete");
                             texture = ((DownloadHandlerTexture)webRequest.downloadHandler).texture;
                         }
             #else
