@@ -30,8 +30,8 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
         public UnityEngine.UI.Scrollbar HScrollbar;
 
         [SerializeField]
+        public PictureCotroller pictureControllerTest;
         public Data[] DataTest;
-
         #endregion
 
         #region Private Variables
@@ -71,7 +71,7 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
 
         public int GetNumberOfCells(EnhancedScroller scroller)
         {
-            return( _data.Count)/2+1;
+            return( _data.Count+1)/2+1;
         }
     
         public float GetCellViewSize(EnhancedScroller scroller, int dataIndex)
