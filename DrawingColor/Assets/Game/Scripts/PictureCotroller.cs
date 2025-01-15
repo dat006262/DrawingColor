@@ -1,11 +1,15 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using DG.Tweening;
 using MoreMountains.Tools;
 using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
+
 public enum PictureControllerAction
 {
    OnPictureFillComplete,
@@ -32,21 +36,62 @@ public struct PictureCotrollerActionEvent
       MMEventManager.TriggerEvent(e);
    }
 }     
-public class PictureCotroller : MonoBehaviour
+public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEvent>
 {
 
    #region Public Variables
-   public List<PartClick> parts = new List<PartClick>();
+   public PartClick       partClickPrefabs;
    public SpriteMask      spriteMask;
    public Vector2         size;
+   public Transform       ScaleTransform;
+   public Transform       partHolder;
+   public Image           imageSpriteFullColor;
+   public GameObject      Line;
+   public Sprite          originSprite;
+   public List<PartClick> parts = new List<PartClick>();
+   public Sprite[]        partSprite;
+   public DefaultAsset[]  partSpritePos;
+
+   #endregion
+
+   #region Private Variables
+   private List<int> DrawHistory = new List<int>();
+   
+
+   #endregion
+
+   #region Unity Method
+
+   private void OnEnable()
+   {
+      DrawHistory = new List<int>();
+      this.MMEventStartListening<PartClickActionEvent>();
+   }
+
+   private void OnDisable()
+   {
+      this.MMEventStopListening<PartClickActionEvent>();
+   }
+
+   public void OnMMEvent(PartClickActionEvent eventType)
+   {
+     DrawHistory.Add(eventType.id);
+     if (DrawHistory.Count == partSprite.Length)
+     {
+        Line.gameObject.SetActive(false);
+     }
+   }
 
    #endregion
 
    [Button]
    public void ResetPicture()
    {
+      DrawHistory = new List<int>();
+      Line.gameObject.SetActive(true);
       foreach (var part in parts)
       {
+  
          part.OnNotColor();
       }
    }
@@ -54,9 +99,12 @@ public class PictureCotroller : MonoBehaviour
    [Button]
    public void GetRef()
    {
-      parts      = this.GetComponentsInChildren<PartClick>().ToList();
-      spriteMask = this.GetComponentInChildren<SpriteMask>();
-      size       = this.GetComponent<RectTransform>().sizeDelta;
+      ReadDefaultAsset();
+      imageSpriteFullColor.sprite = originSprite;
+      parts                       = this.GetComponentsInChildren<PartClick>().ToList();
+      spriteMask                  = this.GetComponentInChildren<SpriteMask>();
+      size                        = this.GetComponent<RectTransform>().sizeDelta;
+      ScaleTransform.localScale   = Vector3.one * size.y / (originSprite.texture.width / originSprite.pixelsPerUnit);
    }
 
    public void SetMaskPos(Vector3 position)
@@ -67,11 +115,37 @@ public class PictureCotroller : MonoBehaviour
    public void TweenSetScaleMask(Action onFillComplete = null)
    {
       spriteMask.transform.localScale = Vector3.zero;
-      spriteMask.transform.DOScale(500f,0.5f).onComplete += () =>
+      spriteMask.transform.DOScale(1500f,0.5f).onComplete += () =>
       {
          spriteMask.transform.localScale = Vector3.zero;
          onFillComplete?.Invoke();
       };
    }
 
+   void ReadDefaultAsset()
+   {
+      partHolder.transform.ClearChildrenImmediate();
+      string path;
+      for (int i = 0; i < partSprite.Length; i++)
+      {
+         PartClick newPart = Instantiate(partClickPrefabs, partHolder) as PartClick;
+         newPart.name               = partSprite[i].name;
+         newPart.whiteSprite.sprite = partSprite[i];
+         path                       = AssetDatabase.GetAssetPath(partSpritePos[i]);
+         Vector2   content       =   ExtensionClass.ReadVector2FormCORFile(path);
+         newPart.transform.localScale = Vector3.one;
+
+         float x = -originSprite.texture.width           / 2f + partSprite[i].texture.width  / 2f + content.x;
+         float y = originSprite.texture.height           / 2f - partSprite[i].texture.height / 2f - content.y;
+         newPart.transform.localPosition = new Vector3(x /100f,y                             /100f, 0);
+         
+         newPart.AutoGetRef();
+         newPart.SetID(i);
+         string[] numbers =   newPart.name.Split('_');
+         newPart.SetIDColor(int.Parse(numbers[0]) );
+      }
+
+   }
+
+ 
 }

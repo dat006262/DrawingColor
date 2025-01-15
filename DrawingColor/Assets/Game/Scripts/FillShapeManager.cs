@@ -11,7 +11,7 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
     #region Public Variables
 
     public Camera           drawCamera;
-    public PictureCotroller currentPictureCotroller;
+    public PictureCotroller currentPictureCotroller => GameManager.Instance.pictureControllerTest;
 
     #endregion
 
@@ -72,9 +72,14 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
         }
     }
 
+    
     #endregion
-    // Start is called before the first frame update
 
+    public void DrawAgain()
+    {
+        currentPictureCotroller.ResetPicture();
+    }
+    
     #region Private Methods
 
     private void FillFeatureOnClickBegan()

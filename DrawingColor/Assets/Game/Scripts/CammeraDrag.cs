@@ -78,7 +78,7 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 		void LateUpdate ()
 		{
 			//Get the offset between the initial orthographic and the current orthographic size
-			difference = initialOrthographicSize -  CammeraZoom.Instance.currentOrthographicSize;;
+			difference = initialOrthographicSize -0*  CammeraZoom.Instance.currentOrthographicSize;;
 			if (difference > 0) {
 				xClamp.x = -difference * targetCamera.aspect;
 				xClamp.y = difference * targetCamera.aspect;

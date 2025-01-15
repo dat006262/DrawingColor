@@ -5,7 +5,7 @@ using Game.Scripts.EnhancedScrollerDrawGame;
 using MoreMountains.Tools;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour, MMEventListener<OpenPictureActionEvent>
+public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>
 {
     #region  Public Variables
     public PictureCotroller pictureControllerTest;
