@@ -30,7 +30,7 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
         public UnityEngine.UI.Scrollbar HScrollbar;
 
         [SerializeField]
-        public PictureCotroller pictureControllerTest;
+ 
         public Data[] DataTest;
         #endregion
 

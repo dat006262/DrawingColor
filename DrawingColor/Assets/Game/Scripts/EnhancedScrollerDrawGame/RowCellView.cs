@@ -7,20 +7,22 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
     public struct OpenPictureActionEvent
     {
         public string pictureName ;
-
+        public RectTransform imageTransform;
         /// <summary>
         /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
         /// </summary>
         /// <param name="eventType">Event type.</param>
-        public OpenPictureActionEvent(string _pictureName)
+        public OpenPictureActionEvent(string _pictureName,RectTransform _imageTransform)
         {
-            pictureName = _pictureName;
+            pictureName    = _pictureName;
+            imageTransform = _imageTransform;
         }
 
         static OpenPictureActionEvent e;
-        public static void Trigger(string _pictureName)
+        public static void Trigger(string _pictureName,RectTransform _imageTransform)
         {
             e.pictureName = _pictureName;
+            e.imageTransform = _imageTransform;
             MMEventManager.TriggerEvent(e);
         }
     }     
@@ -68,7 +70,7 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
             if(!isLoaded) return;
             //Move the Picture to the Button
             //Zoom to Center , Every thing behind fade
-            OpenPictureActionEvent.Trigger("Bear");
+            OpenPictureActionEvent.Trigger("Bear",notFillImage.GetComponent<RectTransform>());
             Debug.Log("Open Picture Bear To TEST");
         }
     }

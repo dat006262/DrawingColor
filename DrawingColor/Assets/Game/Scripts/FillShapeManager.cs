@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using IndieStudio.DrawingAndColoring.Logic;
 using IndieStudio.DrawingAndColoring.Utility;
+using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
-public class FillShapeManager : MonoBehaviour
+public class FillShapeManager : MMSingleton<FillShapeManager>
 {
     #region Public Variables
 

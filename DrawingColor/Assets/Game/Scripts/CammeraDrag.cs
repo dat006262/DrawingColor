@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using MoreMountains.Tools;
 using UnityEngine;
 
-public class CammeraDrag : MonoBehaviour
+public class CammeraDrag : MMSingleton<CammeraDrag>
 {
  	public  Transform CameraFollow;
 		public  Camera  targetCamera;                        //the target camera
