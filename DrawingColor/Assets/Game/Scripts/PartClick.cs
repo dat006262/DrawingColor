@@ -59,6 +59,10 @@ public class PartClick : MonoBehaviour
     {
         idColor = _id;
     }
+    public int GetIDColor()
+    {
+        return idColor;
+    }
     public void OnHighLight()
     {
         

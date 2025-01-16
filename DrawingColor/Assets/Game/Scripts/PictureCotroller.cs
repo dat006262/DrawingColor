@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DG.Tweening;
+using Game.Scripts._04_Jump_To_Demo_1;
 using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEditor;
@@ -12,8 +13,9 @@ using UnityEngine.UI;
 
 public enum PictureControllerAction
 {
+   OnPictureSetUpComplete,
    OnPictureFillComplete,
-        
+ 
 }
 public struct PictureCotrollerActionEvent
 {
@@ -51,10 +53,11 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    public List<PartClick> parts = new List<PartClick>();
    public Sprite[]        partSprite;
    public DefaultAsset[]  partSpritePos;
-
+   public Sprite[]        IDColorSprite;
    #endregion
 
    #region Private Variables
+   [HideInInspector]public List<ColorData> colorDatas = new List<ColorData>();
    private List<int> DrawHistory = new List<int>();
    
 
@@ -65,6 +68,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    private void OnEnable()
    {
       DrawHistory = new List<int>();
+      SetUpParts();
       this.MMEventStartListening<PartClickActionEvent>();
    }
 
@@ -79,11 +83,43 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
      if (DrawHistory.Count == partSprite.Length)
      {
         Line.gameObject.SetActive(false);
+        PictureCotrollerActionEvent.Trigger(PictureControllerAction.OnPictureFillComplete);
      }
    }
 
    #endregion
 
+
+   public void SetUpParts()
+   {
+      //Neu chua to thi ko phai lam j 
+      
+      // Neu do to thuc hien to
+      
+      colorDatas = new List<ColorData>();
+      for (int i = 0; i < IDColorSprite.Length; i++)
+      {
+         int countFilled = 0;
+         for (int j = 0; j < parts.Count; j++)
+         {
+            if (parts[j].GetIDColor() == (i + 1))
+            {
+               Debug.Log("count++");
+               countFilled++;
+            }
+         }
+
+         colorDatas.Add(new ColorData
+         {
+            colorSprite = IDColorSprite[i],
+            colorID         = i + 1,
+            totalPart       = countFilled,
+            countPartFilled = 0
+            
+         });
+      }
+      PictureCotrollerActionEvent.Trigger(PictureControllerAction.OnPictureSetUpComplete);
+   }
    [Button]
    public void ResetPicture()
    {

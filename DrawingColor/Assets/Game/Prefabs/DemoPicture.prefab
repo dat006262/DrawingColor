@@ -193,6 +193,12 @@ MonoBehaviour:
   - {fileID: 102900000, guid: 3374e0f39d72fbd4295c7efa1033372c, type: 3}
   - {fileID: 102900000, guid: d7a4d15274795e049ae706e9865678c6, type: 3}
   - {fileID: 102900000, guid: 0cdbef02f97c2ef48950940633d1b641, type: 3}
+  IDColorSprite:
+  - {fileID: 21300000, guid: e927f4ffa2cbd4c41ac2a26ea3adf0a0, type: 3}
+  - {fileID: 21300000, guid: d341a7fad1484d0428f642c69b1045e3, type: 3}
+  - {fileID: 21300000, guid: dc5295cf04df1164bbd7b83a35e23705, type: 3}
+  - {fileID: 21300000, guid: a48aa9bf23f94c2428309d79103d2ad8, type: 3}
+  - {fileID: 21300000, guid: 8bf8f54a09f80e74dbadd0b726985656, type: 3}
 --- !u!114 &114067803299818444
 MonoBehaviour:
   m_ObjectHideFlags: 0

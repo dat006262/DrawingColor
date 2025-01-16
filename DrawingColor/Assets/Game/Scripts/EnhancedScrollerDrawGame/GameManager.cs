@@ -1,25 +1,31 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Game.Scripts._04_Jump_To_Demo_1;
 using Game.Scripts.EnhancedScrollerDrawGame;
 using MoreMountains.Tools;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>
+public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>
 {
     #region  Public Variables
-    public PictureCotroller pictureControllerTest;
-    public Camera           HomeUICamera;
-    public Camera           GamePlayCamera;
+    public                                      PictureCotroller   pictureControllerTest;
+    public                                      Camera             HomeUICamera;
+    public                                      Camera             GamePlayCamera;
+    public                                      Canvas             UIGamePlay;
+     public CollorIDController collorIDController;
     #endregion
     public void OnEnable()
     {
         this.MMEventStartListening<OpenPictureActionEvent>();
+        this.MMEventStartListening<PictureCotrollerActionEvent>();
     }
 
     public void OnDisable()
     {
         this.MMEventStopListening<OpenPictureActionEvent>();
+        this.MMEventStartListening<PictureCotrollerActionEvent>();
     }
 
     public void OnMMEvent(OpenPictureActionEvent eventType)
@@ -36,6 +42,15 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
        //
         OnGamePlay();
     }
+    public void OnMMEvent(PictureCotrollerActionEvent eventType)
+    {
+        if (eventType.pictureControllerAction == PictureControllerAction.OnPictureSetUpComplete)
+        {
+            UIGamePlay.gameObject.SetActive(true);
+            collorIDController.SetUp(pictureControllerTest.colorDatas);
+        }
+      
+    }
     private void OnUI()
     {
         HomeUICamera.gameObject.SetActive(true);
@@ -50,6 +65,7 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
 
     private void OnGamePlay()
     {
+        UIGamePlay.gameObject.SetActive(true);
         GamePlayCamera.gameObject.SetActive(true);
         FillShapeManager.Instance.gameObject.SetActive(true);
         CammeraDrag.Instance.enabled = true;
