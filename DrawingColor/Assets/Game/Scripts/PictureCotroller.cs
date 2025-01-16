@@ -151,6 +151,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
   
          part.OnNotColor();
       }
+      PictureCotrollerActionEvent.Trigger(PictureControllerAction.OnPictureSetUpComplete);
    }
 
    [Button]
@@ -169,10 +170,12 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
       spriteMask.transform.position = position;
    }
 
-   public void TweenSetScaleMask(Action onFillComplete = null)
+   public void TweenSetScaleMask(float _sizeMask,Action onFillComplete = null)
    {
       spriteMask.transform.localScale = Vector3.zero;
-      spriteMask.transform.DOScale(1500f,0.5f).onComplete += () =>
+      float sizeMask = Mathf.Max(500f, _sizeMask * Screen.height);
+      float time = Mathf.Lerp(0.3f,1f,(_sizeMask-500)/(float)(Screen.height-sizeMask));
+      spriteMask.transform.DOScale(  sizeMask,time).onComplete += () =>
       {
          spriteMask.transform.localScale = Vector3.zero;
          onFillComplete?.Invoke();
@@ -188,6 +191,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          PartClick newPart = Instantiate(partClickPrefabs, partHolder) as PartClick;
          newPart.name               = partSprite[i].name;
          newPart.whiteSprite.sprite = partSprite[i];
+         newPart.size               = Mathf.Max( partSprite[i].texture.width ,partSprite[i].texture.height)/(float) originSprite.texture.width;
          newPart.caroMask.sprite    = partSprite[i];
          path                       = AssetDatabase.GetAssetPath(partSpritePos[i]);
          Vector2   content       =   ExtensionClass.ReadVector2FormCORFile(path);

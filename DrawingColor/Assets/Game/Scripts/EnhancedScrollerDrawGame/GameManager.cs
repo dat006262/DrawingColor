@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Game.Scripts._04_Jump_To_Demo_1;
 using Game.Scripts.EnhancedScrollerDrawGame;
 using MoreMountains.Tools;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -49,8 +50,7 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
     {
         if (eventType.pictureControllerAction == PictureControllerAction.OnPictureSetUpComplete)
         {
-            UIGamePlay.gameObject.SetActive(true);
-            collorIDController.SetUp(pictureControllerTest.colorDatas);
+            SetUp();
         }
       
     }
@@ -62,6 +62,13 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
             pictureControllerTest.ShowAllPart(currentID);
         }
       
+    }
+
+    [Button]
+    private void SetUp()
+    {
+        UIGamePlay.gameObject.SetActive(true);
+        collorIDController.SetUp(pictureControllerTest.colorDatas);
     }
     private void OnUI()
     {

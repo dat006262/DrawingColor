@@ -13,6 +13,8 @@ namespace Game.Scripts._04_Jump_To_Demo_1
         public  int                     countPartFilled;
      
         private bool                    _selected;
+
+        
         public bool Selected
         {
             get { return _selected; }

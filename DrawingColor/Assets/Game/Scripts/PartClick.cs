@@ -43,6 +43,7 @@ public class PartClick : MonoBehaviour
 
     public Collider2D     collider2D;
     public SpriteRenderer whiteSprite;
+    public float          size;
     public SpriteMask     caroMask;
     #endregion
 

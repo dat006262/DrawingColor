@@ -57,6 +57,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
                 {
                     _data.Remove(colorData);
                     hScroller.ReloadData();
+                    
                 }
             }
            
@@ -75,11 +76,22 @@ namespace Game.Scripts._04_Jump_To_Demo_1
         [Button]
         public void SetUp( List<ColorData> inputData)
         {
+            _data = new List<ColorData>();
             Reload();
             Application.targetFrameRate = 60;
             hScroller.Delegate          = this;
-            _data                       = inputData;
+            foreach (var item in inputData)
+            {
+                _data  .Add(new ColorData()
+                {
+                    colorSprite     =item.colorSprite,
+                    colorID         = item.colorID,
+                    totalPart       = item.totalPart,
+                    countPartFilled = item.countPartFilled,
+                });
+            }
 
+            Debug.Log(inputData.Count);
             hScroller.ReloadData();
             
         }

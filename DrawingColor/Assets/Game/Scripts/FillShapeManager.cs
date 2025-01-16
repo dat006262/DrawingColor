@@ -12,20 +12,21 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
 
     public Camera           drawCamera;
     public PictureCotroller currentPictureCotroller => GameManager.Instance.pictureControllerTest;
-
+    public int              OverlapMaximum = 10;
     #endregion
 
     #region Private Variables
 
     [ShowInInspector] private bool            isColoring = false;
     private                   ContactFilter2D ContactFilter;
-
+    protected                 Collider2D[]    _results;
     #endregion
 
     #region UnityMethod
 
     void Start()
     {
+        _results = new Collider2D[OverlapMaximum];
         ContactFilter = new ContactFilter2D
         {
             useLayerMask = true,
@@ -79,29 +80,69 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
     {
         currentPictureCotroller.ResetPicture();
     }
-    
+
+
     #region Private Methods
 
     private void FillFeatureOnClickBegan()
     {
-        RaycastHit2D hit2d = Physics2D.Raycast(GetCurrentPlatformClickPosition(drawCamera), Vector2.zero);
-        if (hit2d.collider != null)
-        {
-            PartClick partClick = hit2d.transform.gameObject.GetComponent<PartClick>();
-            if (partClick != null)
-            {
-                if(!partClick.isHightlight) return;
-                currentPictureCotroller.SetMaskPos(hit2d.point);
-                partClick.OnColoring();
-                isColoring = true;
-                currentPictureCotroller.TweenSetScaleMask(onFillComplete: () =>
-                {
-                    partClick.OnColored();
-                    isColoring = false;
-                });
-                Debug.Log(partClick.transform.gameObject.name);
-            }
-        }
+        // RaycastHit2D hit2d = Physics2D.Raycast(GetCurrentPlatformClickPosition(drawCamera), Vector2.zero);
+        // if (hit2d.collider != null)
+        // {
+        //     PartClick partClick = hit2d.transform.gameObject.GetComponent<PartClick>();
+        //     if (partClick != null)
+        //     {
+        //         if(!partClick.isHightlight) return;
+        //         currentPictureCotroller.SetMaskPos(hit2d.point);
+        //         partClick.OnColoring();
+        //         isColoring = true;
+        //         currentPictureCotroller.TweenSetScaleMask(onFillComplete: () =>
+        //         {
+        //             partClick.OnColored();
+        //             isColoring = false;
+        //         });
+        //         Debug.Log(partClick.transform.gameObject.name);
+        //     }
+        // }
+       int numberOfResults = Physics2D.OverlapCircleNonAlloc(GetCurrentPlatformClickPosition(drawCamera), Screen.width*0.01f, _results);  
+      
+       if (numberOfResults == 0)
+       {
+   
+           return;
+       }
+            
+       // we go through each collider found
+       int min = Mathf.Min(OverlapMaximum, numberOfResults);
+       for (int i = 0; i < min; i++)
+       {
+           if (_results[i] == null)
+           {
+               continue;
+           }
+           if (_results[i] != null)
+           {
+               PartClick partClick =_results[i].transform.gameObject.GetComponent<PartClick>();
+               if (partClick != null)
+               {
+                   if(!partClick.isHightlight) continue;
+                   currentPictureCotroller.SetMaskPos(GetCurrentPlatformClickPosition(drawCamera));
+                   partClick.OnColoring();
+                   isColoring = true;
+                   currentPictureCotroller.TweenSetScaleMask(_sizeMask:partClick.size,onFillComplete: () =>
+                   {
+                       partClick.OnColored();
+                       isColoring = false;
+                   });
+                   Debug.Log(partClick.transform.gameObject.name);
+                   break;
+               }
+             
+           }
+           
+       }
+       
+      
     }
 
     private Vector3 GetCurrentPlatformClickPosition(Camera camera)

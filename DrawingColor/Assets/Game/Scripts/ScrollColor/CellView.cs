@@ -4,6 +4,7 @@ using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
+using Tween = DG.Tweening.Tween;
 
 namespace Game.Scripts._04_Jump_To_Demo_1
 {
@@ -57,10 +58,10 @@ namespace Game.Scripts._04_Jump_To_Demo_1
       [ReadOnly] public int       totalPart;
       [ReadOnly] public int       countPartFilled;
       
-      public Color selectedColor;
-      public Color unSelectedColor;
-      
-      public SelectedDelegate selected;
+      public  Color            selectedColor;
+      public  Color            unSelectedColor;
+      private Tween            fillTween;
+      public  SelectedDelegate selected;
         public void SetData(int dataIndex,ColorData colorData)
         {
             if (_data != null)
@@ -76,6 +77,8 @@ namespace Game.Scripts._04_Jump_To_Demo_1
             colorID                  = colorData.colorID;
             totalPart                = colorData.totalPart;
             countPartFilled          = colorData.countPartFilled;
+            
+            fillTween?.Kill();
             progressImage.fillAmount = countPartFilled / (float)totalPart;
             
             _data.selectedChanged -= SelectedChanged;
@@ -99,7 +102,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
             if (colorID == eventType.idColor &&eventType.PartClickAction == PartClickAction.OnPartFillStart)
             {
                 countPartFilled++;
-                progressImage.DOFillAmount( countPartFilled / (float)totalPart, 0.5f);
+                fillTween=  progressImage.DOFillAmount( countPartFilled / (float)totalPart, 0.5f);
                 if (countPartFilled == totalPart)
                 {
                     OnColorButtonEvent.Trigger(ColorButtonAction.Finish,colorID,DataIndex: DataIndex);
