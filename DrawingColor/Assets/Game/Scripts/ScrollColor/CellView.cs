@@ -1,10 +1,33 @@
 ﻿using EnhancedUI.EnhancedScroller;
+using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Game.Scripts._04_Jump_To_Demo_1
 {
+    public struct OnColorSelectedEvent
+    {
+        public int             idColor;
+    
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
+        /// </summary>
+        /// <param name="eventType">Event type.</param>
+        public OnColorSelectedEvent( int _idColor)
+        {
+            idColor         = _idColor;
+        }
+
+        static OnColorSelectedEvent e;
+        public static void Trigger(int idColor)
+        {
+            e.idColor         = idColor;
+            MMEventManager.TriggerEvent(e);
+        }
+    }    
+    
+    
     public delegate void SelectedDelegate(EnhancedScrollerCellView cellView);
     public class CellView : EnhancedScrollerCellView
     {
@@ -63,6 +86,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
             if (selected != null)
             {
                 selected(this);
+                OnColorSelectedEvent.Trigger(colorID);
             }
         }
     }

@@ -14,6 +14,7 @@ public struct PartClickActionEvent
     public PartClickAction PartClickAction;
     public int             id;
     public int             idColor;
+    
     /// <summary>
     /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
     /// </summary>
@@ -41,14 +42,15 @@ public class PartClick : MonoBehaviour
 
     public Collider2D     collider2D;
     public SpriteRenderer whiteSprite;
-
+    public SpriteMask     caroMask;
     #endregion
 
     #region Private Variables
 
-    [ReadOnly][ShowInInspector] private int id;
-    [ReadOnly][ShowInInspector] private int idColor;
-
+    public  int  id      =0;
+    public  int  idColor =0;
+    public bool isColored;
+    public bool isHightlight =>   caroMask.gameObject.activeSelf;
     #endregion
 
     public void SetID(int _id)
@@ -63,14 +65,21 @@ public class PartClick : MonoBehaviour
     {
         return idColor;
     }
+    [Button]
     public void OnHighLight()
     {
-        
+        if(isColored) return;
+        caroMask.gameObject.SetActive(true);
     }
-
+    [Button]
+    public void OffHighLight()
+    {
+        caroMask.gameObject.SetActive(false);
+    }
     [Button]
     public void OnNotColor()
     {
+        isColored          = false;
         collider2D.enabled = true;
         whiteSprite.gameObject.SetActive(true);
         whiteSprite.maskInteraction = SpriteMaskInteraction.None;
@@ -79,6 +88,8 @@ public class PartClick : MonoBehaviour
     [Button]
     public void OnColoring()
     {
+        isColored = true;
+        OffHighLight();
         collider2D.enabled = false;
         whiteSprite.gameObject.SetActive(true);
         whiteSprite.maskInteraction = SpriteMaskInteraction.VisibleOutsideMask;
@@ -86,6 +97,8 @@ public class PartClick : MonoBehaviour
     [Button]
     public void OnColored()
     {
+        isColored = true;
+        OffHighLight();
         PartClickActionEvent.Trigger( PartClickAction.OnPartFillComplete,id,idColor);
         collider2D.enabled = false;
         whiteSprite.gameObject.SetActive(false);

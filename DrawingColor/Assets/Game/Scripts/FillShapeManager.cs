@@ -90,6 +90,7 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
             PartClick partClick = hit2d.transform.gameObject.GetComponent<PartClick>();
             if (partClick != null)
             {
+                if(!partClick.isHightlight) return;
                 currentPictureCotroller.SetMaskPos(hit2d.point);
                 partClick.OnColoring();
                 isColoring = true;

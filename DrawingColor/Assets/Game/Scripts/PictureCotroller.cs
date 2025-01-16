@@ -89,6 +89,23 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
 
    #endregion
 
+   public void ShowAllPart(int idColor)
+   {
+
+      
+      for (int i = 0; i < parts.Count; i++)
+      {
+         parts[i].OffHighLight();
+         if (!parts[i].isColored)
+         {
+            if (parts[i].idColor == idColor)
+            {
+               parts[i].OnHighLight();
+               
+            }
+         }
+      }
+   }
 
    public void SetUpParts()
    {
@@ -167,6 +184,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          PartClick newPart = Instantiate(partClickPrefabs, partHolder) as PartClick;
          newPart.name               = partSprite[i].name;
          newPart.whiteSprite.sprite = partSprite[i];
+         newPart.caroMask.sprite    = partSprite[i];
          path                       = AssetDatabase.GetAssetPath(partSpritePos[i]);
          Vector2   content       =   ExtensionClass.ReadVector2FormCORFile(path);
          newPart.transform.localScale = Vector3.one;

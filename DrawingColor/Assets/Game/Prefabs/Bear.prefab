@@ -156,7 +156,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60747670605887086}
-  FilledSprite: {fileID: 2102564039468669655}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1072682994421208
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,7 +362,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60046339513248580}
-  FilledSprite: {fileID: 4628573234005425467}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1182982551559112
 GameObject:
   m_ObjectHideFlags: 0
@@ -537,7 +541,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60064260390999000}
-  FilledSprite: {fileID: 3576736064400986333}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1216495009159382
 GameObject:
   m_ObjectHideFlags: 0
@@ -697,7 +703,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60819278034070040}
-  FilledSprite: {fileID: 2742835260543252548}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1232605175462280
 GameObject:
   m_ObjectHideFlags: 0
@@ -753,7 +761,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 565fe323b7919454b927ee1f1c54692d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -934,7 +942,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60808568800323876}
-  FilledSprite: {fileID: 55948712600548012}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1269846591440578
 GameObject:
   m_ObjectHideFlags: 0
@@ -1115,7 +1125,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60779904181255858}
-  FilledSprite: {fileID: 5258671315737406874}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1295650513014600
 GameObject:
   m_ObjectHideFlags: 0
@@ -1268,7 +1280,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60550556694749576}
-  FilledSprite: {fileID: 6529186474159764187}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1316311302818422
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,7 +1302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &224649812321910818
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1360,6 +1374,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ca0bd778a7a684ba640c09108a20f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  partClickPrefabs: {fileID: 0}
+  spriteMask: {fileID: 8136931419488215982}
+  size: {x: 475, y: 475}
+  ScaleTransform: {fileID: 0}
+  partHolder: {fileID: 0}
+  imageSpriteFullColor: {fileID: 0}
+  Line: {fileID: 0}
+  originSprite: {fileID: 0}
   parts:
   - {fileID: 8424295751331522830}
   - {fileID: 848942276376276656}
@@ -1377,8 +1399,9 @@ MonoBehaviour:
   - {fileID: 7634698340505571522}
   - {fileID: 6048936540722129824}
   - {fileID: 4915632977932386594}
-  spriteMask: {fileID: 8136931419488215982}
-  size: {x: 475, y: 475}
+  partSprite: []
+  partSpritePos: []
+  IDColorSprite: []
 --- !u!114 &4736052821819680784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1575,7 +1598,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60631988824863388}
-  FilledSprite: {fileID: 7799684171740038355}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1696545211038020
 GameObject:
   m_ObjectHideFlags: 0
@@ -1785,7 +1810,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60037733766935120}
-  FilledSprite: {fileID: 2086651261441838862}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1731109462329788
 GameObject:
   m_ObjectHideFlags: 0
@@ -1941,7 +1968,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60563517304674020}
-  FilledSprite: {fileID: 2418262136116648329}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1788560610064666
 GameObject:
   m_ObjectHideFlags: 0
@@ -2097,7 +2126,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60227842634427228}
-  FilledSprite: {fileID: 3235117808738957446}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1820454132369086
 GameObject:
   m_ObjectHideFlags: 0
@@ -2253,7 +2284,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60158443072102750}
-  FilledSprite: {fileID: 1258494027057946778}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1832978985935784
 GameObject:
   m_ObjectHideFlags: 0
@@ -2406,7 +2439,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60951412826592992}
-  FilledSprite: {fileID: 4229308767005656246}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1890259778207168
 GameObject:
   m_ObjectHideFlags: 0
@@ -2594,7 +2629,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60010809166714522}
-  FilledSprite: {fileID: 363712222585060107}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1895470521695302
 GameObject:
   m_ObjectHideFlags: 0
@@ -2746,7 +2783,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60444465230275290}
-  FilledSprite: {fileID: 3025140090074296730}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &1910687709907090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2775,7 +2814,7 @@ Transform:
   m_GameObject: {fileID: 1910687709907090}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -25.4, y: -96, z: 0}
+  m_LocalPosition: {x: -114, y: 306, z: 0}
   m_LocalScale: {x: 119.9, y: 120.5116, z: 1.653805}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -2802,7 +2841,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 565fe323b7919454b927ee1f1c54692d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2905,7 +2944,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   collider2D: {fileID: 60493837340302668}
-  FilledSprite: {fileID: 5237650643881042205}
+  whiteSprite: {fileID: 0}
+  id: 0
+  idColor: 0
 --- !u!1 &373559725379498744
 GameObject:
   m_ObjectHideFlags: 0

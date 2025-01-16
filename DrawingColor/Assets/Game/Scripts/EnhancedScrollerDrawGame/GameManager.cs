@@ -7,25 +7,28 @@ using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>
+public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>,MMEventListener<OnColorSelectedEvent>
 {
     #region  Public Variables
-    public                                      PictureCotroller   pictureControllerTest;
-    public                                      Camera             HomeUICamera;
-    public                                      Camera             GamePlayCamera;
-    public                                      Canvas             UIGamePlay;
+    public  PictureCotroller   pictureControllerTest;
+    public  Camera             HomeUICamera;
+    public  Camera             GamePlayCamera;
+    public  Canvas             UIGamePlay;
      public CollorIDController collorIDController;
+     public int                currentID;
     #endregion
     public void OnEnable()
     {
         this.MMEventStartListening<OpenPictureActionEvent>();
         this.MMEventStartListening<PictureCotrollerActionEvent>();
+        this.MMEventStartListening<OnColorSelectedEvent>();
     }
 
     public void OnDisable()
     {
         this.MMEventStopListening<OpenPictureActionEvent>();
-        this.MMEventStartListening<PictureCotrollerActionEvent>();
+        this.MMEventStopListening<PictureCotrollerActionEvent>();
+        this.MMEventStopListening<OnColorSelectedEvent>();
     }
 
     public void OnMMEvent(OpenPictureActionEvent eventType)
@@ -50,6 +53,11 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
             collorIDController.SetUp(pictureControllerTest.colorDatas);
         }
       
+    }
+    public void OnMMEvent(OnColorSelectedEvent eventType)
+    {
+        currentID = eventType.idColor;
+        pictureControllerTest.ShowAllPart(currentID);
     }
     private void OnUI()
     {
