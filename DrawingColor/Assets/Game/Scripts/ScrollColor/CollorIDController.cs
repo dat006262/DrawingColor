@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EnhancedUI.EnhancedScroller;
+using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,7 +12,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
     /// This demo shows how to jump to an index in the scroller. You can jump to a position before
     /// or after the cell. You can also include the spacing before or after the cell.
     /// </summary>
-    public class CollorIDController : MonoBehaviour, IEnhancedScrollerDelegate
+    public class CollorIDController : MonoBehaviour, IEnhancedScrollerDelegate,MMEventListener<PartClickActionEvent>
     {
   
         private List<ColorData> _data;
@@ -29,6 +31,37 @@ namespace Game.Scripts._04_Jump_To_Demo_1
            
         }
 
+        private void OnEnable()
+        {
+            this.MMEventStartListening<PartClickActionEvent>();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening<PartClickActionEvent>();
+        }
+
+        public void OnMMEvent(PartClickActionEvent eventType)
+        {
+            if (eventType.PartClickAction == PartClickAction.OnPartFillStart)
+            {
+                ColorData colorData = _data.Find(x => x.colorID == eventType.idColor);
+                colorData.countPartFilled++;
+            }
+
+            if (eventType.PartClickAction == PartClickAction.OnPartFillComplete)
+            {
+                ColorData colorData = _data.Find(x => x.colorID == eventType.idColor);
+
+                if (colorData.countPartFilled == colorData.totalPart)
+                {
+                    _data.Remove(colorData);
+                    hScroller.ReloadData();
+                }
+            }
+           
+        
+        }
         private void Reload()
         {
             if (_data != null)
@@ -97,5 +130,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
         }
 
         #endregion
+
+    
     }
 }

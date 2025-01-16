@@ -7,7 +7,7 @@ using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>,MMEventListener<OnColorSelectedEvent>
+public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>,MMEventListener<OnColorButtonEvent>
 {
     #region  Public Variables
     public  PictureCotroller   pictureControllerTest;
@@ -21,14 +21,14 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
     {
         this.MMEventStartListening<OpenPictureActionEvent>();
         this.MMEventStartListening<PictureCotrollerActionEvent>();
-        this.MMEventStartListening<OnColorSelectedEvent>();
+        this.MMEventStartListening<OnColorButtonEvent>();
     }
 
     public void OnDisable()
     {
         this.MMEventStopListening<OpenPictureActionEvent>();
         this.MMEventStopListening<PictureCotrollerActionEvent>();
-        this.MMEventStopListening<OnColorSelectedEvent>();
+        this.MMEventStopListening<OnColorButtonEvent>();
     }
 
     public void OnMMEvent(OpenPictureActionEvent eventType)
@@ -54,10 +54,14 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
         }
       
     }
-    public void OnMMEvent(OnColorSelectedEvent eventType)
+    public void OnMMEvent(OnColorButtonEvent eventType)
     {
-        currentID = eventType.idColor;
-        pictureControllerTest.ShowAllPart(currentID);
+        if (eventType.onColorButtonAction == ColorButtonAction.Selected)
+        {
+            currentID = eventType.idColor;
+            pictureControllerTest.ShowAllPart(currentID);
+        }
+      
     }
     private void OnUI()
     {

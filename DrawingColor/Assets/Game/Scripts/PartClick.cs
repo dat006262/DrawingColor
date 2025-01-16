@@ -7,6 +7,7 @@ using UnityEngine;
 public enum PartClickAction
 {
     OnPartFillComplete,
+    OnPartFillStart,
         
 }
 public struct PartClickActionEvent
@@ -88,6 +89,7 @@ public class PartClick : MonoBehaviour
     [Button]
     public void OnColoring()
     {
+        PartClickActionEvent.Trigger( PartClickAction.OnPartFillStart,id,idColor);
         isColored = true;
         OffHighLight();
         collider2D.enabled = false;

@@ -79,12 +79,16 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
 
    public void OnMMEvent(PartClickActionEvent eventType)
    {
-     DrawHistory.Add(eventType.id);
-     if (DrawHistory.Count == partSprite.Length)
-     {
-        Line.gameObject.SetActive(false);
-        PictureCotrollerActionEvent.Trigger(PictureControllerAction.OnPictureFillComplete);
-     }
+      if (eventType.PartClickAction == PartClickAction.OnPartFillComplete)
+      {
+         DrawHistory.Add(eventType.id);
+         if (DrawHistory.Count == partSprite.Length)
+         {
+            Line.gameObject.SetActive(false);
+            PictureCotrollerActionEvent.Trigger(PictureControllerAction.OnPictureFillComplete);
+         }
+      }
+  
    }
 
    #endregion

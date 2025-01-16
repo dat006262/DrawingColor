@@ -1,4 +1,5 @@
-﻿using EnhancedUI.EnhancedScroller;
+﻿using DG.Tweening;
+using EnhancedUI.EnhancedScroller;
 using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -6,30 +7,46 @@ using UnityEngine.UI;
 
 namespace Game.Scripts._04_Jump_To_Demo_1
 {
-    public struct OnColorSelectedEvent
+    public enum ColorButtonAction
     {
-        public int             idColor;
-    
+        Selected,
+        Finish
+    }
+    public struct OnColorButtonEvent
+    {
+        public ColorButtonAction onColorButtonAction;
+        public int               idColor;
+        public int               dataIndex;
         /// <summary>
         /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
         /// </summary>
         /// <param name="eventType">Event type.</param>
-        public OnColorSelectedEvent( int _idColor)
+        public OnColorButtonEvent(ColorButtonAction _onColorButtonAction, int _idColor, int _dataIndex)
         {
-            idColor         = _idColor;
+            onColorButtonAction = _onColorButtonAction;
+            dataIndex           = _dataIndex;
+            idColor             = _idColor;
         }
 
-        static OnColorSelectedEvent e;
-        public static void Trigger(int idColor)
+        static OnColorButtonEvent e;
+        public static void Trigger(ColorButtonAction onColorButtonAction, int idColor)
         {
+            e.onColorButtonAction = onColorButtonAction;
             e.idColor         = idColor;
+            MMEventManager.TriggerEvent(e);
+        }
+        public static void Trigger(ColorButtonAction onColorButtonAction, int idColor, int   DataIndex)
+        {
+            e.onColorButtonAction = onColorButtonAction;
+            e.idColor             = idColor;
+            e.dataIndex           = DataIndex;
             MMEventManager.TriggerEvent(e);
         }
     }    
     
     
     public delegate void SelectedDelegate(EnhancedScrollerCellView cellView);
-    public class CellView : EnhancedScrollerCellView
+    public class CellView : EnhancedScrollerCellView,MMEventListener<PartClickActionEvent>
     {
         public          int       DataIndex { get; private set; }
         private         ColorData _data;
@@ -67,7 +84,31 @@ namespace Game.Scripts._04_Jump_To_Demo_1
             // update the selection state UI
             SelectedChanged(colorData.Selected);
         }
+        private void OnEnable()
+        {
+            this.MMEventStartListening<PartClickActionEvent>();
+        }
+
+        private void OnDisable()
+        {
+            this.MMEventStopListening<PartClickActionEvent>();
+        }
+
+        public void OnMMEvent(PartClickActionEvent eventType)
+        {
+            if (colorID == eventType.idColor &&eventType.PartClickAction == PartClickAction.OnPartFillStart)
+            {
+                countPartFilled++;
+                progressImage.DOFillAmount( countPartFilled / (float)totalPart, 0.5f);
+                if (countPartFilled == totalPart)
+                {
+                    OnColorButtonEvent.Trigger(ColorButtonAction.Finish,colorID,DataIndex: DataIndex);
+                    
+                }
+            }
         
+
+        }
         void OnDestroy()
         {
             if (_data != null)
@@ -86,7 +127,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
             if (selected != null)
             {
                 selected(this);
-                OnColorSelectedEvent.Trigger(colorID);
+                OnColorButtonEvent.Trigger(ColorButtonAction.Selected,colorID);
             }
         }
     }
