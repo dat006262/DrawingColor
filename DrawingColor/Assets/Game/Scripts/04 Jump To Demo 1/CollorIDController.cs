@@ -26,12 +26,23 @@ namespace Game.Scripts._04_Jump_To_Demo_1
         public RectTransform              holder;
         void Start()
         {
-     
+           
         }
 
+        private void Reload()
+        {
+            if (_data != null)
+            {
+                for (var i = 0; i < _data.Count; i++)
+                {
+                    _data[i].selectedChanged = null;
+                }
+            }
+        }
         [Button]
         public void SetUp( List<ColorData> inputData)
         {
+            Reload();
             Application.targetFrameRate = 60;
             hScroller.Delegate          = this;
             _data                       = inputData;
@@ -41,7 +52,23 @@ namespace Game.Scripts._04_Jump_To_Demo_1
         }
         #region UI Handlers
 
+        private void CellViewSelected(EnhancedScrollerCellView cellView)
+        {
+            if (cellView == null)
+            {
+            }
+            else
+            {
+                var selectedDataIndex = (cellView as CellView).dataIndex;
 
+                for (var i = 0; i < _data.Count; i++)
+                {
+                    _data[i].Selected = (selectedDataIndex == i);
+                }
+
+
+            }
+        }
 
         #endregion
 
@@ -63,9 +90,9 @@ namespace Game.Scripts._04_Jump_To_Demo_1
         public EnhancedScrollerCellView GetCellView(EnhancedScroller scroller, int dataIndex, int cellIndex)
         {
             CellView cellView = scroller.GetCellView(cellViewPrefab) as CellView;
-
-            cellView.name = "Cell " + dataIndex.ToString();
-            cellView.SetData(_data[dataIndex]);
+            cellView.selected = CellViewSelected;
+            cellView.name     = "Cell " + dataIndex.ToString();
+            cellView.SetData(dataIndex,_data[dataIndex]);
             return cellView;
         }
 
