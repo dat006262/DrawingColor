@@ -14,7 +14,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
     /// </summary>
     public class CollorIDController : MonoBehaviour, IEnhancedScrollerDelegate,MMEventListener<PartClickActionEvent>
     {
-  
+        private int currentIndex = 0;
         private List<ColorData> _data;
 
         public EnhancedScroller hScroller;
@@ -55,14 +55,40 @@ namespace Game.Scripts._04_Jump_To_Demo_1
 
                 if (colorData.countPartFilled == colorData.totalPart)
                 {
+                    int  idColor;
+                    bool selected =false;
                     _data.Remove(colorData);
                     hScroller.ReloadData();
+                    for (var i = 0; i < _data.Count; i++)
+                    {
+                        if ( i==currentIndex)
+                        {
+                            selected          = true;
+                            _data[i].Selected = true;
+                            OnColorButtonEvent.Trigger(ColorButtonAction.Selected,  _data[i].colorID);
+                            Debug.Log("Selected" + _data[i].colorID);
+                        }
+                        else
+                        {
+                            _data[i].Selected =false;
+                        }
+                       
+                    }
+                    if (!selected)
+                    {
+                        _data[0].Selected = true;
+                        OnColorButtonEvent.Trigger(ColorButtonAction.Selected,  _data[0].colorID);
+                        Debug.Log("Selected" + _data[0].colorID);
+                    }
                     
+                  
                 }
             }
            
         
         }
+
+
         private void Reload()
         {
             if (_data != null)
@@ -105,7 +131,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
             else
             {
                 var selectedDataIndex = (cellView as CellView).dataIndex;
-
+                currentIndex = selectedDataIndex;
                 for (var i = 0; i < _data.Count; i++)
                 {
                     _data[i].Selected = (selectedDataIndex == i);
