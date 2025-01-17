@@ -7,6 +7,8 @@ using MoreMountains.Tools;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
+
 
 public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>,MMEventListener<OnColorButtonEvent>
 {
@@ -97,4 +99,5 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
         CammeraDrag.Instance.enabled = false;
         CammeraZoom.Instance.enabled = false;
     }
+
 }

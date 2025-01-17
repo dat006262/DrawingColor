@@ -7,6 +7,7 @@ using DG.Tweening;
 using Game.Scripts._04_Jump_To_Demo_1;
 using MoreMountains.Tools;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,7 +39,7 @@ public struct PictureCotrollerActionEvent
       MMEventManager.TriggerEvent(e);
    }
 }     
-public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEvent>
+public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEvent>,MMEventListener<CameraZoomSlideEvent>
 {
 
    #region Public Variables
@@ -51,6 +52,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    public GameObject      Line;
    public Sprite          originSprite;
    public List<PartClick> parts = new List<PartClick>();
+   public List<TextMeshPro>          lstText = new List<TextMeshPro>();
    public Sprite[]        partSprite;
    public DefaultAsset[]  partSpritePos;
    public Sprite[]        IDColorSprite;
@@ -70,11 +72,13 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
       DrawHistory = new List<int>();
       SetUpParts();
       this.MMEventStartListening<PartClickActionEvent>();
+      this.MMEventStartListening<CameraZoomSlideEvent>();
    }
 
    private void OnDisable()
    {
       this.MMEventStopListening<PartClickActionEvent>();
+      this.MMEventStopListening<CameraZoomSlideEvent>();
    }
 
    public void OnMMEvent(PartClickActionEvent eventType)
@@ -90,7 +94,14 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
       }
   
    }
-
+   public void OnMMEvent(CameraZoomSlideEvent eventType)
+   {
+      for (int i = 0; i < lstText.Count; i++)
+      {
+         lstText[i].gameObject.SetActive(lstText[i].fontSize > ((1-eventType.value) * 10));
+      }
+  
+   }
    #endregion
 
    public void ShowAllPart(int idColor)
@@ -160,11 +171,17 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
       ReadDefaultAsset();
       imageSpriteFullColor.sprite = originSprite;
       parts                       = this.GetComponentsInChildren<PartClick>().ToList();
+      lstText                     = this.GetComponentsInChildren<TextMeshPro>().ToList();
+      SortText();
       spriteMask                  = this.GetComponentInChildren<SpriteMask>();
       size                        = this.GetComponent<RectTransform>().sizeDelta;
       ScaleTransform.localScale   = Vector3.one * size.y / (originSprite.texture.width / originSprite.pixelsPerUnit);
    }
-
+   [Button]
+   public void SortText()
+   {
+      lstText.Sort(CompartTextSize);
+   }
    public void SetMaskPos(Vector3 position)
    {
       spriteMask.transform.position = position;
@@ -205,9 +222,14 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          newPart.SetID(i);
          string[] numbers =   newPart.name.Split('_');
          newPart.SetIDColor(int.Parse(numbers[0]) );
+         newPart.text.text = numbers[0];
       }
 
    }
 
- 
+   public int CompartTextSize(TextMeshPro v1, TextMeshPro v2)
+   {
+    
+         return v2.fontSize.CompareTo(v1.fontSize); // Ưu tiên theo z thấp
+   }
 }

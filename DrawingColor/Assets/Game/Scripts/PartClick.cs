@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using MoreMountains.Tools;
 using Sirenix.OdinInspector;
+using TMPro;
 using UnityEngine;
 public enum PartClickAction
 {
@@ -45,6 +46,7 @@ public class PartClick : MonoBehaviour
     public SpriteRenderer whiteSprite;
     public float          size;
     public SpriteMask     caroMask;
+    public TextMeshPro   text;
     #endregion
 
     #region Private Variables
@@ -119,4 +121,5 @@ public class PartClick : MonoBehaviour
         collider2D   = this.GetComponent<Collider2D>();
         whiteSprite = this.transform.GetComponent<SpriteRenderer>();
     }
+ 
 }

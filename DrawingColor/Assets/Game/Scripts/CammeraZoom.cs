@@ -2,7 +2,27 @@ using Cinemachine;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
+public struct CameraZoomSlideEvent
+{
+    public float value;
 
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
+    /// </summary>
+    /// <param name="eventType">Event type.</param>
+    public CameraZoomSlideEvent(float _value)
+    {
+        value = _value;
+    }
+
+    static CameraZoomSlideEvent e;
+    public static void Trigger(float _value)
+    {
+        e.value = _value;
+        MMEventManager.TriggerEvent(e);
+    }
+}     
 public class CammeraZoom : MMSingleton<CammeraZoom>
 {
     [SerializeField] private Camera cam;
@@ -94,6 +114,7 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
     private void OnSliderValueChanged(float value)
     {
         virturalcam.m_Lens.OrthographicSize = Mathf.Lerp(othorgographicSizeZoomMax * scale, othorgographicSizeZoomMin*scale, value);
+        CameraZoomSlideEvent.Trigger(value);
     }
     private Vector3 ClampCamera(Vector3 targerPosition,Vector3 ceterGame)//truyen vao 1 vector3 va tra ve 1 vector3 hop ly voi Cammera
     {
