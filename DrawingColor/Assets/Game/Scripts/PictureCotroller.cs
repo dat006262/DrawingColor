@@ -54,7 +54,9 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    public List<PartClick> parts = new List<PartClick>();
    public List<TextMeshPro>          lstText = new List<TextMeshPro>();
    public Sprite[]        partSprite;
+   #if UNITY_EDITOR
    public DefaultAsset[]  partSpritePos;
+   #endif
    public Sprite[]        IDColorSprite;
    #endregion
 
@@ -162,6 +164,8 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
   
          part.OnNotColor();
       }
+
+    
       PictureCotrollerActionEvent.Trigger(PictureControllerAction.OnPictureSetUpComplete);
    }
 
@@ -191,7 +195,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    {
       spriteMask.transform.localScale = Vector3.zero;
       float sizeMask = Mathf.Max(500f, _sizeMask * Screen.height);
-      float time = Mathf.Lerp(0.3f,1f,(_sizeMask-500)/(float)(Screen.height-sizeMask));
+      float time = Mathf.Lerp(0.5f,1.5f,(_sizeMask-500)/(float)(Screen.height-sizeMask));
       spriteMask.transform.DOScale(  sizeMask,time).onComplete += () =>
       {
          spriteMask.transform.localScale = Vector3.zero;
@@ -210,8 +214,12 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          newPart.whiteSprite.sprite = partSprite[i];
          newPart.size               = Mathf.Max( partSprite[i].texture.width ,partSprite[i].texture.height)/(float) originSprite.texture.width;
          newPart.caroMask.sprite    = partSprite[i];
+#if UNITY_EDITOR
          path                       = AssetDatabase.GetAssetPath(partSpritePos[i]);
+
+    
          Vector2   content       =   ExtensionClass.ReadVector2FormCORFile(path);
+
          newPart.transform.localScale = Vector3.one;
 
          float x = -originSprite.texture.width           / 2f + partSprite[i].texture.width  / 2f + content.x;
@@ -223,6 +231,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          string[] numbers =   newPart.name.Split('_');
          newPart.SetIDColor(int.Parse(numbers[0]) );
          newPart.text.text = numbers[0];
+#endif
       }
 
    }
@@ -232,4 +241,5 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
     
          return v2.fontSize.CompareTo(v1.fontSize); // Ưu tiên theo z thấp
    }
+
 }

@@ -1,11 +1,13 @@
 using Cinemachine;
+using DG.Tweening;
 using MoreMountains.Tools;
 using UnityEngine;
 using UnityEngine.UI;
+using Sirenix.OdinInspector;
 public struct CameraZoomSlideEvent
 {
     public float value;
-
+    
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
@@ -41,6 +43,8 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
     public        float currentOrthographicSize => virturalcam? virturalcam.m_Lens.OrthographicSize:0;
     public static bool  zoomStartedBefore;
     public static bool  isCameraZooming;
+
+    public float DefaultSlideValue;
     //-----------------
 
     float scale => (Screen.height / (float)Screen.width) / (float)(1920 / (float)1080);
@@ -52,8 +56,8 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
         virturalcam.m_Lens.OrthographicSize = othorgographicSizeNormal * scale;
 
         slider.onValueChanged.AddListener(OnSliderValueChanged);
-        float x =  Mathf.Lerp(0f,1f, (othorgographicSizeZoomMax-othorgographicSizeNormal) / (othorgographicSizeZoomMax-othorgographicSizeZoomMin));
-        slider.value = x;
+         DefaultSlideValue =  Mathf.Lerp(0f,1f, (othorgographicSizeZoomMax-othorgographicSizeNormal) / (othorgographicSizeZoomMax-othorgographicSizeZoomMin));
+        slider.value = DefaultSlideValue;
     }
 
     private void Update()
@@ -144,4 +148,22 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
         slider.value = Mathf.Clamp01(slider.value);
     }
 
+    [Button]
+    public void DefaltCameraZoom()
+    {
+        CammeraDrag.Instance.CameraFollow.transform.DOMove(Vector3.zero, 1f);
+        slider.DOValue(DefaultSlideValue, 1f);
+    }
+
+    [Button]
+    public void MoveCameraTo(Vector3 pos)
+    {
+        CammeraDrag.Instance.CameraFollow.transform.position = pos;
+        CammeraDrag.Instance.targetCamera.transform.position = pos;
+        CammeraDrag.Instance.targetCameraPosition            = pos;
+        CammeraDrag.Instance.currentTouchPosition            = pos;
+        CammeraDrag.Instance.previousTouchPosition           = pos;
+        CammeraDrag.Instance.firstTouchPosition              = pos;
+        slider.DOValue(1, 1f);
+    }
 }

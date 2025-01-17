@@ -12,7 +12,7 @@ namespace Game.Scripts._04_Jump_To_Demo_1
     /// This demo shows how to jump to an index in the scroller. You can jump to a position before
     /// or after the cell. You can also include the spacing before or after the cell.
     /// </summary>
-    public class CollorIDController : MonoBehaviour, IEnhancedScrollerDelegate,MMEventListener<PartClickActionEvent>
+    public class CollorIDController : MMSingleton<CollorIDController>, IEnhancedScrollerDelegate,MMEventListener<PartClickActionEvent>
     {
         private int currentIndex = 0;
         private List<ColorData> _data;
@@ -139,6 +139,15 @@ namespace Game.Scripts._04_Jump_To_Demo_1
 
 
             }
+        }
+
+        public void SelectedColor(int index)
+        {
+            _data[index].Selected = true;
+            OnColorButtonEvent.Trigger(ColorButtonAction.Selected,  _data[index].colorID);
+            Debug.Log("Selected" + _data[index].colorID);
+
+
         }
 
         #endregion

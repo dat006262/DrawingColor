@@ -13,6 +13,8 @@ using UnityEngine.UI;
 public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>,MMEventListener<OnColorButtonEvent>
 {
     #region  Public Variables
+
+    public  bool               pointerInDrawArea;
     public  PictureCotroller   pictureControllerTest;
     public  Camera             HomeUICamera;
     public  Camera             GamePlayCamera;
@@ -94,10 +96,36 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
     }
     private void OffGamePlay()
     {
+        UIGamePlay.gameObject.SetActive(false);
         GamePlayCamera.gameObject.SetActive(false);
         FillShapeManager.Instance.gameObject.SetActive(false);
         CammeraDrag.Instance.enabled = false;
         CammeraZoom.Instance.enabled = false;
     }
 
+    [Button]
+    public void FindPartToHint()
+    {
+        if (currentID == 0)
+        {
+            CollorIDController.Instance.SelectedColor(0);
+        }
+       PartClick x =  pictureControllerTest. parts.Find(x => x.idColor ==GameManager.Instance. currentID && !x.isColored);
+       if (x != null)
+       {
+            Hint(x);
+       }
+     
+    }
+
+    public void Hint(PartClick partClick)
+    {
+        CammeraZoom.Instance.MoveCameraTo(partClick.text.transform.position);
+    }
+
+    public void BackToHome()
+    {
+        OnUI();
+        OffGamePlay();
+    }
 }

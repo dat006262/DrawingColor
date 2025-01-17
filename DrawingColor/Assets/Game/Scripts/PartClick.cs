@@ -104,10 +104,11 @@ public class PartClick : MonoBehaviour
     {
         isColored = true;
         OffHighLight();
-        PartClickActionEvent.Trigger( PartClickAction.OnPartFillComplete,id,idColor);
         collider2D.enabled = false;
         whiteSprite.gameObject.SetActive(false);
         whiteSprite.maskInteraction = SpriteMaskInteraction.None;
+        PartClickActionEvent.Trigger( PartClickAction.OnPartFillComplete,id,idColor);
+    
     }
 
     public void OnHint()

@@ -78,6 +78,7 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
 
     public void DrawAgain()
     {
+        isColoring = false;
         currentPictureCotroller.ResetPicture();
     }
 

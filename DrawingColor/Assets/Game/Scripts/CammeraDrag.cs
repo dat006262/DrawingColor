@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class CammeraDrag : MMSingleton<CammeraDrag>
 {
- 	public  Transform CameraFollow;
-		public  Camera  targetCamera;                        //the target camera
-		private Touch   touch;                               //the sceen touch
-		private Vector2 currentTouchPosition = Vector2.zero; //the current touch position
-		private Vector2 previousTouchPosition;               //the previous touch position
-		private Vector3 offset = Vector3.zero;               //the offset between the touch and the scene camera
-		private Vector3 firstTouchPosition;                  // the first touch postion on the screen
-		private Vector2 targetCameraPosition = Vector2.zero; //scene camera position
-		private Vector2 yClamp, xClamp;                      //use to limit values
+ 	public      Transform CameraFollow;
+		public  Camera    targetCamera;                        //the target camera
+		private Touch     touch;                               //the sceen touch
+		public Vector2   currentTouchPosition = Vector2.zero; //the current touch position
+		public Vector2   previousTouchPosition;               //the previous touch position
+		public Vector3   offset = Vector3.zero;               //the offset between the touch and the scene camera
+		public Vector3   firstTouchPosition;                  // the first touch postion on the screen
+		public  Vector2   targetCameraPosition = Vector2.zero; //scene camera position
+		private Vector2   yClamp, xClamp;                      //use to limit values
 		[Range(0,300)]
 		public float speed = 10f;//lerp speed
 		private float maxSpeed;// max lerp speed
@@ -41,7 +41,10 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 		// Update is called once per frame
 		void Update ()
 		{
-		
+			if ( ! GameManager.Instance. pointerInDrawArea)
+			{
+				return;
+			}
 
 			if (!Application.isMobilePlatform) {
 				if (Input.GetMouseButtonDown (1)) {
@@ -55,6 +58,7 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 				return;
 			}
 
+		
 			if (Application.isMobilePlatform) {
 				OnSceeenTouch ();
 			} else {
@@ -77,6 +81,10 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 
 		void LateUpdate ()
 		{
+			if (!GameManager.Instance. pointerInDrawArea)
+			{
+				return;
+			}
 			//Get the offset between the initial orthographic and the current orthographic size
 			difference = initialOrthographicSize -0*  CammeraZoom.Instance.currentOrthographicSize;;
 			if (difference > 0) {
@@ -104,7 +112,7 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 			if (Input.touchCount != 1 || CammeraZoom.isCameraZooming) {
 				return;
 			}
-
+		
 			touch = Input.GetTouch (0);
 
 			if (touch.phase == TouchPhase.Began) {
@@ -171,6 +179,7 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 		/// </summary>
 		private void LerpToTouchPosition ()
 		{
+			if(!GameManager.Instance. pointerInDrawArea) return;
 			targetCameraPosition = targetCamera.transform.position;
 	              
 			xDistance = currentTouchPosition.x - firstTouchPosition.x;//the x distance between the first touch and the current touch
@@ -201,4 +210,6 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 		public Vector3 GetTargetPosition(){
 			return targetCameraPosition;
 		}
+
+
 }
