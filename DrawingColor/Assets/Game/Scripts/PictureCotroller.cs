@@ -55,7 +55,8 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    public List<TextMeshPro>          lstText = new List<TextMeshPro>();
    public Sprite[]        partSprite;
    #if UNITY_EDITOR
-   public DefaultAsset[]  partSpritePos;
+   public  DefaultAsset[] partSpritePos;
+   public List<string>   corFilePaths = new List<string>();
    #endif
    public Sprite[]        IDColorSprite;
    #endregion
@@ -170,8 +171,43 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    }
 
    [Button]
+   public void LoadListSprite(string pathFolder)
+   {
+      string[] guids = AssetDatabase.FindAssets("t:sprite", new[] { pathFolder });
+      int      i     = 0;
+      partSprite    = new Sprite[guids.Length];
+      foreach (var guid in guids)
+      {
+         
+         string path   = AssetDatabase.GUIDToAssetPath(guid);
+         Sprite sprite = AssetDatabase.LoadAssetAtPath<Sprite>(path);
+      
+         partSprite[i] = sprite;
+         Debug.Log("Loaded sprite: " + sprite.name);
+         i++;
+      }
+   }
+   
+   [Button]
+   public void LoadListCor(string pathFolder)
+   {
+      if (Directory.Exists(pathFolder))
+      {
+         Debug.Log("Loaded .cor file");
+      }
+
+    
+      string[] corFiles = Directory.GetFiles(pathFolder, "*.cor", SearchOption.AllDirectories);
+      foreach (var file in corFiles)
+      {
+         corFilePaths.Add(file);
+         Debug.Log("Loaded .cor file: " + file);
+      }
+   }
+   [Button]
    public void GetRef()
    {
+      //LoadListSprite();
       ReadDefaultAsset();
       imageSpriteFullColor.sprite = originSprite;
       parts                       = this.GetComponentsInChildren<PartClick>().ToList();
@@ -215,9 +251,9 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          newPart.size               = Mathf.Max( partSprite[i].texture.width ,partSprite[i].texture.height)/(float) originSprite.texture.width;
          newPart.caroMask.sprite    = partSprite[i];
 #if UNITY_EDITOR
-         path                       = AssetDatabase.GetAssetPath(partSpritePos[i]);
+      //   path                       = AssetDatabase.GetAssetPath(partSpritePos[i]);
 
-    
+         path                       = corFilePaths[i];
          Vector2   content       =   ExtensionClass.ReadVector2FormCORFile(path);
 
          newPart.transform.localScale = Vector3.one;
