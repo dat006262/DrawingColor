@@ -11,7 +11,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/DrawingAndColoring Extra/Scenes/Landscape/Album.unity
     guid: bb91497f4b93eee4eb1477ed8d98e57c
-  - enabled: 1
+  - enabled: 0
     path: Assets/DrawingAndColoring Extra/Scenes/Landscape/Game.unity
     guid: edee28a6fe3ccd749a4c0942036877d3
   m_configObjects: {}

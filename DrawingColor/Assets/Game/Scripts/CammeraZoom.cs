@@ -92,13 +92,14 @@ public class CammeraZoom : MMSingleton<CammeraZoom>
 
     private void OnScreenTouches()
     {
+        if (!(Input.touchCount > 1)) {
+            isCameraZooming          = false;
+            return;
+        }
         if (Input.touchCount == 2)
         {
         
-            if (!(Input.touchCount > 1)) {
-                isCameraZooming          = false;
-                return;
-            }
+           Debug.Log("OnScreenTouches");
 
             zoomStartedBefore = true;
             isCameraZooming   = true;

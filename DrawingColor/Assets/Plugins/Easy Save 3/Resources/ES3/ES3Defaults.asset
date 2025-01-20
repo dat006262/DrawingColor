@@ -36,6 +36,7 @@ MonoBehaviour:
     - Coffee.UIParticle
     - EnhancedScroller_asmdef
     - Hierarchy4.Runtime
+    - IngameDebugConsole.Runtime
     - Lofelt.NiceVibrations
     - Lofelt.NiceVibrations.Demo
     - MoreMountains.Tools

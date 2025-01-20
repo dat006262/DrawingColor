@@ -54,9 +54,6 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 				}
 			}
 
-			if (!isRunning) {
-				return;
-			}
 
 		
 			if (Application.isMobilePlatform) {
@@ -112,7 +109,7 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 			if (Input.touchCount != 1 || CammeraZoom.isCameraZooming) {
 				return;
 			}
-		
+			Debug.Log("OnSceeenTouch");
 			touch = Input.GetTouch (0);
 
 			if (touch.phase == TouchPhase.Began) {
