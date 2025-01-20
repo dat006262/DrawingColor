@@ -122,5 +122,7 @@ public class PartClick : MonoBehaviour
         collider2D   = this.GetComponent<Collider2D>();
         whiteSprite = this.transform.GetComponent<SpriteRenderer>();
     }
+
+  
  
 }

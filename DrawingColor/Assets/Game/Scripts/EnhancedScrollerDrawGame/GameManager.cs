@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPictureActionEvent>,MMEventListener<PictureCotrollerActionEvent>,MMEventListener<OnColorButtonEvent>
 {
     #region  Public Variables
-
+    public  List<PictureCotroller> lstPictureController = new List<PictureCotroller>();
     public  bool               pointerInDrawArea;
     public  PictureCotroller   pictureControllerTest;
     public  Camera             HomeUICamera;
@@ -41,6 +41,7 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
        Debug.Log(eventType.pictureName + " Opened");
        
        // Phai dung Image de Scroll Hoat dong dung
+       pictureControllerTest = eventType.pictureCotroller;
        pictureControllerTest.gameObject.SetActive(true);
        pictureControllerTest.transform.localPosition = Vector3.zero;
        pictureControllerTest.transform.localScale    = Vector3.one *Screen.width / pictureControllerTest.size.y;
@@ -96,6 +97,7 @@ public class GameManager : MMSingleton<GameManager>, MMEventListener<OpenPicture
     }
     private void OffGamePlay()
     {
+        pictureControllerTest.gameObject.SetActive(false);
         UIGamePlay.gameObject.SetActive(false);
         GamePlayCamera.gameObject.SetActive(false);
         FillShapeManager.Instance.gameObject.SetActive(false);

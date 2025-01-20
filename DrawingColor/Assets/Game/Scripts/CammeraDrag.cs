@@ -41,10 +41,10 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 		// Update is called once per frame
 		void Update ()
 		{
-			if ( ! GameManager.Instance. pointerInDrawArea)
+			/*if ( ! GameManager.Instance. pointerInDrawArea)
 			{
 				return;
-			}
+			}*/
 
 			if (!Application.isMobilePlatform) {
 				if (Input.GetMouseButtonDown (1)) {
@@ -81,10 +81,10 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 
 		void LateUpdate ()
 		{
-			if (!GameManager.Instance. pointerInDrawArea)
+			/*if (!GameManager.Instance. pointerInDrawArea)
 			{
 				return;
-			}
+			}*/
 			//Get the offset between the initial orthographic and the current orthographic size
 			difference = initialOrthographicSize -0*  CammeraZoom.Instance.currentOrthographicSize;;
 			if (difference > 0) {
@@ -179,7 +179,7 @@ public class CammeraDrag : MMSingleton<CammeraDrag>
 		/// </summary>
 		private void LerpToTouchPosition ()
 		{
-			if(!GameManager.Instance. pointerInDrawArea) return;
+		//	if(!GameManager.Instance. pointerInDrawArea) return;
 			targetCameraPosition = targetCamera.transform.position;
 	              
 			xDistance = currentTouchPosition.x - firstTouchPosition.x;//the x distance between the first touch and the current touch

@@ -55,7 +55,6 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    public List<TextMeshPro>          lstText = new List<TextMeshPro>();
    public Sprite[]        partSprite;
    #if UNITY_EDITOR
-   public  DefaultAsset[] partSpritePos;
    public List<string>   corFilePaths = new List<string>();
    #endif
    public Sprite[]        IDColorSprite;
@@ -101,7 +100,8 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    {
       for (int i = 0; i < lstText.Count; i++)
       {
-         lstText[i].gameObject.SetActive(lstText[i].fontSize > ((1-eventType.value) * 10));
+       //  lstText[i].gameObject.SetActive(lstText[i].fontSize > ((1-eventType.value) * 10));
+       lstText[i].gameObject.SetActive(false);
       }
   
    }
@@ -173,6 +173,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
    [Button]
    public void LoadListSprite(string pathFolder)
    {
+#if UNITY_EDITOR
       string[] guids = AssetDatabase.FindAssets("t:sprite", new[] { pathFolder });
       int      i     = 0;
       partSprite    = new Sprite[guids.Length];
@@ -186,11 +187,26 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
          Debug.Log("Loaded sprite: " + sprite.name);
          i++;
       }
+      partSprite = partSprite.OrderBy(sprite => sprite.name).ToArray();
+#endif
+    
    }
-   
+
+   [Button]
+   public void SortPart()
+   {
+      for (int i = 0; i < parts.Count; i++)
+      {
+         parts[i].text.transform.name ="Text"+ parts[i].transform.name;
+      }
+      parts.Sort((sprite1,   sprite2) => string.Compare(sprite1.transform.name, sprite2.transform.name));
+      lstText.Sort((sprite1, sprite2) => string.Compare(sprite1.transform.name, sprite2.transform.name));
+   }
+
    [Button]
    public void LoadListCor(string pathFolder)
    {
+#if UNITY_EDITOR
       if (Directory.Exists(pathFolder))
       {
          Debug.Log("Loaded .cor file");
@@ -198,11 +214,20 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
 
     
       string[] corFiles = Directory.GetFiles(pathFolder, "*.cor", SearchOption.AllDirectories);
-      foreach (var file in corFiles)
+      
+      var sortedFiles = corFiles
+         .Select(file => new FileInfo(file))
+         .OrderBy(fileInfo => fileInfo.FullName)
+         .Select(fileInfo => fileInfo.FullName)
+         .ToList();
+      foreach (var file in sortedFiles)
       {
+         
          corFilePaths.Add(file);
          Debug.Log("Loaded .cor file: " + file);
       }
+#endif
+   
    }
    [Button]
    public void GetRef()
@@ -216,6 +241,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
       spriteMask                  = this.GetComponentInChildren<SpriteMask>();
       size                        = this.GetComponent<RectTransform>().sizeDelta;
       ScaleTransform.localScale   = Vector3.one * size.y / (originSprite.texture.width / originSprite.pixelsPerUnit);
+      SortPart();
    }
    [Button]
    public void SortText()
@@ -260,7 +286,7 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
 
          float x = -originSprite.texture.width           / 2f + partSprite[i].texture.width  / 2f + content.x;
          float y = originSprite.texture.height           / 2f - partSprite[i].texture.height / 2f - content.y;
-         newPart.transform.localPosition = new Vector3(x /100f,y                             /100f, 0);
+         newPart.transform.localPosition = new Vector3(x /100f,y    /100f, 0);
          
          newPart.AutoGetRef();
          newPart.SetID(i);
@@ -272,6 +298,18 @@ public class PictureCotroller : MonoBehaviour, MMEventListener<PartClickActionEv
 
    }
 
+   [Button]
+   public void SetLinePos(SpriteRenderer spriteRenderer,string pathcor)
+   {
+      Vector2 content =   ExtensionClass.ReadVector2FormCORFile(pathcor);
+      Debug.Log(content);
+      Debug.Log( spriteRenderer.sprite.texture.width +"_"+ spriteRenderer.sprite.texture.height);
+      float   x       = -originSprite.texture.width / 2f + spriteRenderer.sprite.texture.width   / 2f +  content.x;
+      float   y       = originSprite.texture.height / 2f -  spriteRenderer.sprite.texture.height / 2f -  content.y;
+      Debug.Log(x                                        + " _"                                       + y);
+      spriteRenderer.transform.localPosition = new Vector3(x /100f,y                             /100f, 0);
+    
+   }
    public int CompartTextSize(TextMeshPro v1, TextMeshPro v2)
    {
     

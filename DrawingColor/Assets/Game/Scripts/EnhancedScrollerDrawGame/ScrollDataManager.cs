@@ -12,10 +12,6 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
     {
         public Sprite           SpriteRender;
         public PictureCotroller PictureCotrollerPrefabs;
-        public bool             isLoaded;
-      
-        public string     imageUrl;
-        public Vector2    imageDimensions;
 
 
     }

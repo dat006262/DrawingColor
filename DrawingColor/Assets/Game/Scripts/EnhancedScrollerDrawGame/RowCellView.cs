@@ -8,30 +8,33 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
     {
         public string pictureName ;
         public RectTransform imageTransform;
+        public PictureCotroller pictureCotroller;
         /// <summary>
         /// Initializes a new instance of the <see cref="MoreMountains.TopDownEngine.TopDownEngineEvent"/> struct.
         /// </summary>
         /// <param name="eventType">Event type.</param>
-        public OpenPictureActionEvent(string _pictureName,RectTransform _imageTransform)
+        public OpenPictureActionEvent(string _pictureName,RectTransform _imageTransform,PictureCotroller _pictureCotroller)
         {
             pictureName    = _pictureName;
             imageTransform = _imageTransform;
+            pictureCotroller = _pictureCotroller;
         }
 
         static OpenPictureActionEvent e;
-        public static void Trigger(string _pictureName,RectTransform _imageTransform)
+        public static void Trigger(string _pictureName,RectTransform _imageTransform, PictureCotroller _pictureCotroller)
         {
-            e.pictureName = _pictureName;
-            e.imageTransform = _imageTransform;
+            e.pictureName      = _pictureName;
+            e.imageTransform   = _imageTransform;
+            e.pictureCotroller = _pictureCotroller;
             MMEventManager.TriggerEvent(e);
         }
     }     
     public class RowCellView : MonoBehaviour
     {
-        public RectTransform container;
-        public Image         notFillImage;
-        public Sprite        defaultSprite;
-
+        public  RectTransform                              container;
+        public  Image                                      notFillImage;
+        public  Sprite                                     defaultSprite;
+        private Game.Scripts.EnhancedScrollerDrawGame.Data _data;
         #region Private Variables
 
         private bool isLoaded;
@@ -44,6 +47,7 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
         /// <param name="data"></param>
         public void SetData(Game.Scripts.EnhancedScrollerDrawGame.Data data)
         {
+            _data = data;
             container.gameObject.SetActive(data != null);
             if(data == null) return;
             if (data.SpriteRender != null)
@@ -70,7 +74,7 @@ namespace Game.Scripts.EnhancedScrollerDrawGame
             if(!isLoaded) return;
             //Move the Picture to the Button
             //Zoom to Center , Every thing behind fade
-            OpenPictureActionEvent.Trigger("Bear",notFillImage.GetComponent<RectTransform>());
+            OpenPictureActionEvent.Trigger("Bear",notFillImage.GetComponent<RectTransform>(),_data.PictureCotrollerPrefabs);
             Debug.Log("Open Picture Bear To TEST");
         }
     }

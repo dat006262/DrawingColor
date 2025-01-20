@@ -87,61 +87,61 @@ public class FillShapeManager : MMSingleton<FillShapeManager>
 
     private void FillFeatureOnClickBegan()
     {
-        // RaycastHit2D hit2d = Physics2D.Raycast(GetCurrentPlatformClickPosition(drawCamera), Vector2.zero);
-        // if (hit2d.collider != null)
-        // {
-        //     PartClick partClick = hit2d.transform.gameObject.GetComponent<PartClick>();
-        //     if (partClick != null)
-        //     {
-        //         if(!partClick.isHightlight) return;
-        //         currentPictureCotroller.SetMaskPos(hit2d.point);
-        //         partClick.OnColoring();
-        //         isColoring = true;
-        //         currentPictureCotroller.TweenSetScaleMask(onFillComplete: () =>
-        //         {
-        //             partClick.OnColored();
-        //             isColoring = false;
-        //         });
-        //         Debug.Log(partClick.transform.gameObject.name);
-        //     }
-        // }
-       int numberOfResults = Physics2D.OverlapCircleNonAlloc(GetCurrentPlatformClickPosition(drawCamera), Screen.width*0.01f, _results);  
-      
-       if (numberOfResults == 0)
-       {
-   
-           return;
-       }
-            
-       // we go through each collider found
-       int min = Mathf.Min(OverlapMaximum, numberOfResults);
-       for (int i = 0; i < min; i++)
-       {
-           if (_results[i] == null)
-           {
-               continue;
-           }
-           if (_results[i] != null)
-           {
-               PartClick partClick =_results[i].transform.gameObject.GetComponent<PartClick>();
-               if (partClick != null)
-               {
-                   if(!partClick.isHightlight) continue;
-                   currentPictureCotroller.SetMaskPos(GetCurrentPlatformClickPosition(drawCamera));
-                   partClick.OnColoring();
-                   isColoring = true;
-                   currentPictureCotroller.TweenSetScaleMask(_sizeMask:partClick.size,onFillComplete: () =>
-                   {
-                       partClick.OnColored();
-                       isColoring = false;
-                   });
-                   Debug.Log(partClick.transform.gameObject.name);
-                   break;
-               }
-             
-           }
-           
-       }
+        RaycastHit2D hit2d = Physics2D.Raycast(GetCurrentPlatformClickPosition(drawCamera), Vector2.zero);
+        if (hit2d.collider != null)
+        {
+            PartClick partClick = hit2d.transform.gameObject.GetComponent<PartClick>();
+            if (partClick != null)
+            {
+                if(!partClick.isHightlight) return;
+                currentPictureCotroller.SetMaskPos(hit2d.point);
+                partClick.OnColoring();
+                isColoring = true;
+                currentPictureCotroller.TweenSetScaleMask(_sizeMask:partClick.size,onFillComplete: () =>
+                {
+                    partClick.OnColored();
+                    isColoring = false;
+                });
+                Debug.Log(partClick.transform.gameObject.name);
+            }
+        }
+       // int numberOfResults = Physics2D.OverlapCircleNonAlloc(GetCurrentPlatformClickPosition(drawCamera), Screen.width*0.01f, _results);  
+       //
+       // if (numberOfResults == 0)
+       // {
+       //
+       //     return;
+       // }
+       //      
+       // // we go through each collider found
+       // int min = Mathf.Min(OverlapMaximum, numberOfResults);
+       // for (int i = 0; i < min; i++)
+       // {
+       //     if (_results[i] == null)
+       //     {
+       //         continue;
+       //     }
+       //     if (_results[i] != null)
+       //     {
+       //         PartClick partClick =_results[i].transform.gameObject.GetComponent<PartClick>();
+       //         if (partClick != null)
+       //         {
+       //             if(!partClick.isHightlight) continue;
+       //             currentPictureCotroller.SetMaskPos(GetCurrentPlatformClickPosition(drawCamera));
+       //             partClick.OnColoring();
+       //             isColoring = true;
+       //             currentPictureCotroller.TweenSetScaleMask(_sizeMask:partClick.size,onFillComplete: () =>
+       //             {
+       //                 partClick.OnColored();
+       //                 isColoring = false;
+       //             });
+       //             Debug.Log(partClick.transform.gameObject.name);
+       //             break;
+       //         }
+       //       
+       //     }
+       //     
+       // }
        
       
     }
